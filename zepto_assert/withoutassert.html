@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+  <title>test 4 zepto assert</title>
+  <style>
+    img{width:60%;}
+    label{margin-left: 1rem;}
+  </style>
+  <script src="zepto-1.1.2.js"></script>
+</head>
+<body>
+  <p>当前无assert模块，没有优化，<a href="withassert.html">点击进入有assert模块页面</a></p>
+  <button>点我添加图片</button><label></label>
+  <ul></ul>
+
+  <script>
+    var $btn = $('button'),
+        $ul = $('ul'),
+        $label = $('label'),
+        addImg = (function () {
+          var _count = 0;
+          return function () {
+            var li = '<li><a>删除本图片</a><img src="img/' + (++_count) + '.jpg" /></li>',
+                labelText = '已添加了共计' + _count*2 + 'MB的图片';
+            $ul.append(li);
+            $label.text(labelText);
+            if (_count == 10) {
+              _count = size = null;
+              $btn.off().text('没有新图片可添加').attr('disabled', true);
+            }
+          }
+        })(),
+        deleteImg = function(){
+          $(this).parent().remove()
+        };
+
+    $btn.on('click', addImg);
+    $ul.on('click', 'a', deleteImg);
+
+  </script>
+</body>
+</html>
