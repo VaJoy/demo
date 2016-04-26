@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+  <title>没加viewport</title>
+</head>
+<body>
+  <div style="height: 50px; background: yellow;">
+    点我
+  </div>
+  <span id="st"></span><span>,</span><span id="et"></span>
+
+  <script>
+    var st, et;
+    document.querySelector('div').addEventListener('touchstart', function(){
+      document.querySelector('#st').innerHTML = Date.now()
+    }, false);
+    document.querySelector('div').addEventListener('click', function(){
+      document.querySelector('#et').innerHTML = Date.now()
+    }, false);
+  </script>
+</body>
+</html>
