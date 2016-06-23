@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+  <title>localStorage测试</title>
+</head>
+<body>
+  <div style="height: 50px; background: yellow;">
+    点我
+  </div>
+  <span id="st"></span><span>,</span><span id="et"></span>
+
+  <script>
+    document.querySelector('div').addEventListener('click', function(){
+      localStorage.abc = 1;
+    }, false);
+    
+    if(localStorage.getItem("abb")) alert('yes')
+  </script>
+</body>
