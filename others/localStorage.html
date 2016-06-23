@@ -9,13 +9,14 @@
   <div style="height: 50px; background: yellow;">
     点我
   </div>
-  <span id="st"></span><span>,</span><span id="et"></span>
 
   <script>
     document.querySelector('div').addEventListener('click', function(){
-      localStorage.abc = 1;
+      localStorage.setItem("abc", "123");
     }, false);
     
-    if(localStorage.getItem("abc")) alert('yes')
+    var l;
+    if(l = localStorage.getItem("abc")){ alert('yes')}
+    console.log(l)
   </script>
 </body>
