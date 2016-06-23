@@ -6,17 +6,28 @@
   <title>localStorage测试</title>
 </head>
 <body>
-  <div style="height: 50px; background: yellow;">
-    点我
+  <div class='a' style="height: 50px; background: yellow;">
+    点我添加localStorage.abc
   </div>
+  <div class='b' style="height: 50px; background: yellow;">
+    点我去掉localStorage.abc
+  </div>
+  是否缓存了localStorage.abc：<span></span>
 
   <script>
-    document.querySelector('div').addEventListener('click', function(){
+    var span = document.querySelector('span')
+  
+    document.querySelector('div.a').addEventListener('click', function(){
       localStorage.setItem("abc", "123");
+      span.innerText = 'YES'
+    }, false);
+    document.querySelector('div.b').addEventListener('click', function(){
+      localStorage.removeItem("abc");
+      span.innerText = 'NO'
     }, false);
     
-    var l;
-    if(l = localStorage.getItem("abc")){ alert('yes')}
+    var l = localStorage.getItem("abc");
+    span.innerText = l ? 'YES': 'NO';
     console.log(l)
   </script>
 </body>
