@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <title></title>
+  <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+  <style>
+    div{
+      background: yellow;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+<div>
+
+</div>
+
+  <script>
+    var div = document.querySelector('div');
+    div.addEventListener('touchmove', function(){
+      setTimeout(function(){
+        div.innerText = Date.now()
+      }, 0)
+    }, false)
+  </script>
+</body>
+</html>
