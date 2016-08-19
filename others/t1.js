@@ -4,3 +4,5 @@
 window.v=function(){
     c();
 };
+
+v();
