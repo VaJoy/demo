@@ -2,22 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  
-  <title>没加viewport</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+  <title>test </title>
 </head>
 <body>
-  <div style="height: 50px; background: yellow;">
-    点我
-  </div>
-  <span id="st"></span><span>,</span><span id="et"></span>
+  <input value='hahah' />
 
   <script>
-    var st, et;
-    document.querySelector('div').addEventListener('touchstart', function(){
-      document.querySelector('#st').innerHTML = Date.now()
-    }, false);
-    document.querySelector('div').addEventListener('click', function(){
-      document.querySelector('#et').innerHTML = Date.now()
+    document.querySelector('input').addEventListener('blur', function(){
+      alert('blur');
     }, false);
   </script>
 </body>
