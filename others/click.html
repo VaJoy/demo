@@ -6,12 +6,17 @@
   <title>test </title>
 </head>
 <body>
+  <div></div>
   <input value='hahah' />
 
   <script>
-    var st, et;
+    var div = document.querySelector('div');
     document.querySelector('input').addEventListener('blur', function(){
-      alert('blur')
+      div.innerText='blur'
+    }, false);
+    
+    document.querySelector('input').addEventListener('focus', function(){
+      div.innerText='focus'
     }, false);
   </script>
 </body>
