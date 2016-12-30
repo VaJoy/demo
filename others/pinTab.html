@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+  <title>Title</title>
+  <style>
+    *{
+      margin: 0;
+    }
+    header{
+      background: lightgray;
+      height: 60px;
+    }
+    .outer{
+      position: absolute;
+      background: green;
+      height: 50px;
+      width: 100%;
+    }
+    .sticky{
+      position: fixed;
+      top:0;
+    }
+    section{
+      margin-top: 50px;
+      height: 1000px;
+      background: yellow;
+    }
+  </style>
+</head>
+<body>
+  <header>333</header>
+  <div class="outer">
+    123
+  </div>
+  <section>666</section>
+
+<script>
+  var div = document.querySelector('.outer');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 60){
+      div.classList.add('sticky')
+    }else{
+      div.classList.remove('sticky')
+    }
+  }, false)
+</script>
+</body>
+</html>
