@@ -1,1 +1,1 @@
-setTimeout(function(){ window.dsfsdfd.fdfdfsdf() }, 3000)
+setTimeout(function(){window.mqq.dsdfsfdff() }, 3000)
