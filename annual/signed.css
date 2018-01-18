@@ -1,0 +1,240 @@
+body,html{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+p{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: Arial;
+    position: relative;
+}
+.scene-all *{
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+.buildings,.buildings2{
+    position: relative;
+    width:100%;
+    height:100%;
+    transform: rotate(-30deg);
+    transform-origin: 0 100%;
+}
+.building-wrap{
+    position: relative;
+    transform: translateX(0);
+    left: 60%;
+    width:1100%;
+    height: 100%;
+    /**transition: translateX 20s linear;**/
+}
+
+.forwards{
+    transform: translateX(-64%);
+}
+
+div.building-wrap2{
+    left: 110%;
+}
+
+@keyframes building{
+    0%{
+        transform: translate3d(0,0,0)
+    }
+    100%{
+        transform: translate3d(-56%,0,0)
+    }
+}
+
+
+.building-wrap p{
+    position: relative;
+    float: left;
+    bottom: 0;
+    margin-left: -3%;
+    background-position: center bottom;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    width:11%;
+    height: 100%;
+    transform: rotate(30deg);
+}
+
+
+.scene-all{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: #00B25A;
+}
+
+.scene-all .bg{
+    transform: rotate(-30deg);
+    transform-origin: 33% 50%;
+    position: absolute;
+    width: 400%;
+    height: 20%;
+    top: 40%;
+    left: -80%;
+}
+
+.scene-all .road{
+    position: absolute;
+    z-index: 2;
+    top: 20%;
+    height: 60%;
+    width: 100%;
+    background: #555;
+    animation: road 0.99s infinite linear;
+}
+
+@keyframes road{
+    0%{
+        transform: translateX(0)
+    }
+    100%{
+        transform: translateX(-120px)
+    }
+}
+.scene-all div.car{
+    position: absolute;
+    z-index: 3;
+    left: 22%;
+    top: 50%;
+    margin-top: -75px;
+    width: 118px;
+    height: 111px;
+    background: url("./img/car.png") center center no-repeat;
+    background-size: contain;
+    animation: car 1s infinite;
+}
+
+@keyframes car{
+    0%{
+        transform: translateY(0) rotate(30deg)
+    }
+    25%{
+        transform: translateY(1px) rotate(30deg)
+    }
+    50%{
+        transform: translateY(0) rotate(30deg)
+    }
+    75%{
+        transform: translateY(2px) rotate(30deg)
+    }
+    100%{
+        transform: translateY(0) rotate(30deg)
+    }
+}
+
+.scene-all .road>p{
+    transform: skewX(30deg);
+    position: relative;
+    float: left;
+    top: 50%;
+    margin: -4px 0 0 60px;
+    height: 8px;
+    width: 60px;
+    background: white;
+}
+
+.scene-all .sand{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #FBBE7B;
+}
+
+
+.loading-all{
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+section.fade{
+    opacity: 0;
+}
+.loading-bg{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: #4ACAEA;
+}
+.loading-wrap{
+    position: absolute;
+    width: 612px;
+    height: 792px;
+    left: 50%;
+    top: 46%;
+    margin-left: -306px;
+    margin-top: -396px;
+}
+.loading-process{
+    bottom: 8%;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    color: white;
+}
+.loading-process>p{
+    height: 2px;
+    background: white;
+    margin: 0 auto 15px auto;
+}
+
+.b1{
+    background-image: url("./img/b1.png");
+}
+.b2{
+    background-image: url("./img/b2.png");
+}
+.b3{
+    background-image: url("./img/b3.png");
+}
+.b4{
+    background-image: url("./img/b4.png");
+}
+.b5{
+    background-image: url("./img/b5.png");
+}
+.b6{
+    background-image: url("./img/b6.png");
+}
+.b7{
+    background-image: url("./img/b7.png");
+}
+.b8{
+    background-image: url("./img/b8.png");
+}
+.z1{
+    z-index: 11;
+}
+.z2{
+    z-index: 12;
+}
+.z3{
+    z-index: 13;
+}
+.z4{
+    z-index: 14;
+}
+.z5{
+    z-index: 15;
+}
+.z6{
+    z-index: 16;
+}
+.z7{
+    z-index: 17;
+}
+.z8{
+    z-index: 18;
+}
+.z9{
+    z-index: 19;
+}
+.z10{
+    z-index: 20;
+}
