@@ -1,4 +1,5 @@
 var svg = document.querySelector('#svg');
+var processBar = document.querySelector('.loading-process>p');
 
 var imgList = ['img/car.png'];
 Object.keys(Array.apply(null, {length: 8})).forEach(function(i){
@@ -25,7 +26,8 @@ function startLoading(){
 	document.querySelector('.loading-wrap').classList.remove('hide');
 
 	var i = 0, loopCount = 0;
-	loadingTimer = setTimeout(function anim() {
+	var raf = new DelayRAF();
+	setTimeout(function anim() {
 		if(i >= sharps.length) i = 0;
 		svg.setAttribute('d', sharps[i]);
 
@@ -33,23 +35,39 @@ function startLoading(){
 		if(i == sharps.length) {
 			if(imgCount == 0 || loopCount >= 15) { //图片已加载完，或者循环了15次，直接切换场景
 				toggleScene()
-			} else {
+			} else {  //最后一帧svg，停个2秒
 				loopCount++;
-				setTimeout(function(){
-					loadingTimer = setTimeout(anim, 0);
-				}, 2000);
+				raf.timeout(anim, 2000);
 			}
 		} else {
-			loadingTimer = setTimeout(anim, 80);
+			raf.timeout(anim, 80);
 		}
 	}, 0)
 }
 
+function DelayRAF(){
+	this.lastTime = 0;
+}
+DelayRAF.prototype.timeout = function(callback, interval){
+	var that = this;
+	loadingTimer = requestAnimationFrame(function anim(){
+		var time = parseInt(Date.now());
+		if(time - that.lastTime > interval){
+			callback();
+			that.lastTime = time;
+		} else {
+			setTimeout(anim, 50)
+		}
+		//requestAnimationFrame(anim)
+	});
+};
+
 function toggleScene() {
 	document.querySelector('.scene-all').classList.remove('hide');
+	processBar.style.width = '100%';
 	matchTop();
 	buildingsMove();
-	clearTimeout(loadingTimer);
+	cancelAnimationFrame(loadingTimer);
 	loadingTimer = null;
 	var loading = document.querySelector('.loading-all');
 	setTimeout(function(){
@@ -62,8 +80,7 @@ function toggleScene() {
 }
 
 function loadImgs() {
-	var process = 10;
-	var processBar = document.querySelector('.loading-process>p');
+	var process = 0;
 	imgList.forEach(function(url){
 		var img = new Image();
 		img.onload = function(){
