@@ -1,6 +1,11 @@
 var svg = document.querySelector('#svg');
 
-
+var imgList = ['img/car.png'];
+Object.keys(Array.apply(null, {length: 8})).forEach(function(i){
+	i = (i|0) + 1;
+	imgList.push('img/b' + i + '.png')
+});
+var imgCount = imgList.length;
 var loadingTimer;
 function startLoading(){
 	var sharps = [];
@@ -17,20 +22,57 @@ function startLoading(){
 	sharps.push("M296.17,393.49c11.89,10.43,45.41,43.01,67.99,34.93 c27.17-9.73,27.17-35.3,22.52-47.55c-4.65-12.24-21.8-23.77-37.88-19.45c-16.08,4.33-35.74,21.97-35.74,21.97l7.5,7.93 c0,0,20.73-18.37,31.81-19.81c6.39-0.83,26.8,0,26.8,23.41c0,22.33-23.23,27.01-36.09,20.89c-7.92-3.77-20.16-13.31-27.25-19.09 c-12.06-10.8-45.41-43.01-67.99-34.93c-27.17,9.73-27.17,35.3-22.52,47.54c4.65,12.25,21.8,23.77,37.88,19.45 c16.08-4.32,35.74-21.97,35.74-21.97l-7.5-7.92c0,0-20.73,18.37-31.81,19.81c-6.39,0.83-26.8,0-26.8-23.41 c0-22.33,23.23-27.02,36.09-20.89C276.84,378.17,289.08,387.7,296.17,393.49z M305.02,311c-19.39,0-26.85,12.88-29.68,24.09 l0.18,0.07c-0.33,0.71-0.52,1.5-0.52,2.34c0,3.04,2.46,5.5,5.5,5.5c2.46,0,4.54-1.61,5.24-3.84l0.74,0.29 c4.19-16.87,14.6-17.25,18.9-17.1c6.61,0,20.99,0.42,22.33,29.71c0,3.42,3,5.4,6.08,5.4c3.03-0.36,4.97-2.66,4.97-5.94v-0.18 C338.76,351.34,341.65,311,305.02,311z M305.73,481c16.41,0,24.89-8.09,29.26-17.03l-0.1-0.15c0.7-0.93,1.11-2.08,1.11-3.32 c0-3.04-2.46-5.5-5.5-5.5c-2.37,0-4.39,1.5-5.17,3.6l-0.72-0.05c-5.06,10.89-13.78,11.1-18.52,11.1 c-5.18,0.18-19.24-0.42-20.57-29.71c-0.34-3.6-2.44-5.4-5.52-5.4c-3.21,0.18-5.54,2.66-5.54,5.94v0.18 C274.46,440.66,271.42,481,305.73,481z");
 	sharps.push("M296.17,393.49c11.89,10.43,45.41,43.01,67.99,34.93 c27.17-9.73,27.17-35.3,22.52-47.55c-4.65-12.24-21.8-23.77-37.88-19.45c-16.08,4.33-35.74,21.97-35.74,21.97l7.5,7.93 c0,0,20.73-18.37,31.81-19.81c6.39-0.83,26.8,0,26.8,23.41c0,22.33-23.23,27.01-36.09,20.89c-7.92-3.77-20.16-13.31-27.25-19.09 c-12.06-10.8-45.41-43.01-67.99-34.93c-27.17,9.73-27.17,35.3-22.52,47.54c4.65,12.25,21.8,23.77,37.88,19.45 c16.08-4.32,35.74-21.97,35.74-21.97l-7.5-7.92c0,0-20.73,18.37-31.81,19.81c-6.39,0.83-26.8,0-26.8-23.41 c0-22.33,23.23-27.02,36.09-20.89C276.84,378.17,289.08,387.7,296.17,393.49z M305.02,311c-34.31,0-31.27,40.34-31.27,40.34v0.18 c0,3.28,2.32,5.76,5.54,5.94c3.07,0,5.18-1.8,5.51-5.4c1.34-29.29,15.39-29.89,20.58-29.71c6.61,0,20.99,0.42,22.33,29.71 c0,3.42,3,5.4,6.08,5.4c3.03-0.36,4.97-2.66,4.97-5.94v-0.18C338.76,351.34,341.65,311,305.02,311z M305.73,481 c36.63,0,33.75-40.34,33.75-40.34v-0.18c0-3.28-1.94-5.58-4.98-5.94c-3.07,0-6.07,1.98-6.08,5.4 c-1.33,29.29-15.72,29.71-22.33,29.71c-5.18,0.18-19.24-0.42-20.57-29.71c-0.34-3.6-2.44-5.4-5.52-5.4 c-3.21,0.18-5.54,2.66-5.54,5.94v0.18C274.46,440.66,271.42,481,305.73,481z");
 
-	var i = 0;
+	document.querySelector('.loading-wrap').classList.remove('hide');
+
+	var i = 0, loopCount = 0;
 	loadingTimer = setTimeout(function anim() {
 		if(i >= sharps.length) i = 0;
 		svg.setAttribute('d', sharps[i]);
 
 		i+=1;
 		if(i == sharps.length) {
-			setTimeout(function(){
-				loadingTimer = setTimeout(anim, 0);
-			}, 2000)
+			if(imgCount == 0 || loopCount >= 15) { //图片已加载完，或者循环了15次，直接切换场景
+				toggleScene()
+			} else {
+				loopCount++;
+				setTimeout(function(){
+					loadingTimer = setTimeout(anim, 0);
+				}, 2000);
+			}
 		} else {
 			loadingTimer = setTimeout(anim, 80);
 		}
 	}, 0)
+}
+
+function toggleScene() {
+	document.querySelector('.scene-all').classList.remove('hide');
+	matchTop();
+	buildingsMove();
+	clearTimeout(loadingTimer);
+	loadingTimer = null;
+	var loading = document.querySelector('.loading-all');
+	setTimeout(function(){
+		loading.classList.add('fade');
+		setTimeout(function(){
+			loading.parentNode.removeChild(loading);
+		}, 1000);
+	}, 50);
+
+}
+
+function loadImgs() {
+	var process = 10;
+	var processBar = document.querySelector('.loading-process>p');
+	imgList.forEach(function(url){
+		var img = new Image();
+		img.onload = function(){
+			imgCount -= 1;
+			process += 10;
+			processBar.style.width = process + '%'
+		};
+		img.src = url;
+	})
 }
 
 function matchTop(){
@@ -46,6 +88,7 @@ function matchTop(){
 var buildings = document.querySelectorAll('.building-wrap');
 
 function buildingMove(building, distance){
+	//用animation会有闪动问题，改脚本解决
 	building.style.transform = "translateX(-" + distance + '%)';
 }
 var buildingsMove = (function(){
@@ -65,8 +108,5 @@ var buildingsMove = (function(){
 	}
 })();
 
-//startLoading();
-
-matchTop();
-
-buildingsMove();
+startLoading();
+loadImgs();
