@@ -1,12 +1,5 @@
 var svg = document.querySelector('#svg');
-var processBar = document.querySelector('.loading-process>p');
 
-var imgList = ['img/car.png'];
-Object.keys(Array.apply(null, {length: 8})).forEach(function(i){
-	i = (i|0) + 1;
-	imgList.push('img/b' + i + '.png')
-});
-var imgCount = imgList.length;
 var loadingTimer;
 function startLoading(){
 	var sharps = [];
@@ -25,7 +18,7 @@ function startLoading(){
 
 	document.querySelector('.loading-wrap').classList.remove('hide');
 
-	var i = 0, loopCount = 0;
+	var i = 0;
 	var raf = new DelayRAF();
 	setTimeout(function anim() {
 		if(i >= sharps.length) i = 0;
@@ -33,12 +26,8 @@ function startLoading(){
 
 		i+=1;
 		if(i == sharps.length) {
-			if(imgCount == 0 || loopCount >= 15) { //图片已加载完，或者循环了15次，直接切换场景
-				toggleScene()
-			} else {  //最后一帧svg，停个2秒
-				loopCount++;
-				raf.timeout(anim, 2000);
-			}
+			cancelAnimationFrame(loadingTimer);
+			loadingTimer = null;
 		} else {
 			raf.timeout(anim, 80);
 		}
@@ -58,77 +47,10 @@ DelayRAF.prototype.timeout = function(callback, interval){
 		} else {
 			setTimeout(anim, 50)
 		}
-		//requestAnimationFrame(anim)
 	});
 };
 
-function toggleScene() {
-	document.querySelector('.scene-all').classList.remove('hide');
-	processBar.style.width = '100%';
-	matchTop();
-	buildingsMove();
-	cancelAnimationFrame(loadingTimer);
-	loadingTimer = null;
-	var loading = document.querySelector('.loading-all');
-	setTimeout(function(){
-		loading.classList.add('fade');
-		setTimeout(function(){
-			loading.parentNode.removeChild(loading);
-		}, 1000);
-	}, 50);
-
-}
-
-function loadImgs() {
-	var process = 0;
-	imgList.forEach(function(url){
-		var img = new Image();
-		img.onload = function(){
-			imgCount -= 1;
-			process += 10;
-			processBar.style.width = process + '%'
-		};
-		img.src = url;
-	})
-}
-
-function matchTop(){
-	var w = window.innerWidth,
-		h = window.innerHeight;
-	var r = (h/w).toFixed(2);
-	var buildingAboveTop = '-' + (5 * r + 28.45) + '%';
-	var buildingBelowTop = '-' + (32 * r) + '%';
-	document.querySelector('.building-wrap').style.top = buildingAboveTop;
-	document.querySelector('.building-wrap2').style.top = buildingBelowTop;
-}
-
-var buildings = document.querySelectorAll('.building-wrap');
-
-function buildingMove(building, distance){
-	//用animation会有闪动问题，改脚本解决
-	building.style.transform = "translateX(-" + distance + '%)';
-}
-var buildingsMove = (function(){
-	var distance = 0;
-	return function(){
-		setTimeout(function animate(){
-			if(distance > 63.9) {
-				distance = 0
-			} else {
-				distance += 0.05
-			}
-			buildingMove(buildings[0], distance);
-			buildingMove(buildings[1], distance);
-			requestAnimationFrame(animate)
-		}, 0);
-
-	}
-})();
-
 setTimeout(function(){
 	startLoading();
-}, 100);
+}, 200);
 
-setTimeout(function(){
-	loadImgs();
-}, 500);
