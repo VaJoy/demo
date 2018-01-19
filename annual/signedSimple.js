@@ -29,7 +29,7 @@ function startLoading(){
 			cancelAnimationFrame(loadingTimer);
 			loadingTimer = null;
 		} else {
-			raf.timeout(anim, 80);
+			raf.timeout(anim, 60);
 		}
 	}, 0)
 }

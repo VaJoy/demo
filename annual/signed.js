@@ -40,7 +40,7 @@ function startLoading(){
 				raf.timeout(anim, 2000);
 			}
 		} else {
-			raf.timeout(anim, 80);
+			raf.timeout(anim, 60);
 		}
 	}, 0)
 }
@@ -125,10 +125,10 @@ var buildingsMove = (function(){
 	}
 })();
 
-setTimeout(function(){
+setTimeout(function(){  //延迟一点启动svg动画，避免卡顿
 	startLoading();
-}, 100);
+}, 150);
 
-setTimeout(function(){
+setTimeout(function(){ //延迟一点加载图片，避免卡顿
 	loadImgs();
 }, 500);
