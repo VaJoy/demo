@@ -40,7 +40,7 @@ function startLoading(){
 				raf.timeout(anim, 2000);
 			}
 		} else {
-			raf.timeout(anim, 60);
+			raf.timeout(anim, 65);
 		}
 	}, 0)
 }
@@ -56,7 +56,7 @@ DelayRAF.prototype.timeout = function(callback, interval){
 			callback();
 			that.lastTime = time;
 		} else {
-			setTimeout(anim, 50)
+			setTimeout(anim, 30)
 		}
 		//requestAnimationFrame(anim)
 	});

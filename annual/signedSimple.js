@@ -45,7 +45,7 @@ DelayRAF.prototype.timeout = function(callback, interval){
 			callback();
 			that.lastTime = time;
 		} else {
-			setTimeout(anim, 50)
+			setTimeout(anim, 30)
 		}
 	});
 };
