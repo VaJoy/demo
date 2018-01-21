@@ -84,12 +84,15 @@ function toggleScene() {
 
 function loadImgs() {
 	var process = 0;
-	imgList.forEach(function(url){
+	imgList.forEach(function load(url){
 		var img = new Image();
 		img.onload = function(){
 			imgCount -= 1;
 			process += 10;
 			processBar.style.width = process + '%'
+		};
+		img.onerror = function(){
+			load(url)
 		};
 		img.src = url;
 	})
