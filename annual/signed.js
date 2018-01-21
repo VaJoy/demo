@@ -71,7 +71,7 @@ function toggleScene() {
 	loadingTimer = null;
 	var loading = document.querySelector('.loading-all');
 	var noticeTip = document.querySelector('.notice');
-	noticeTip.style.display = 'block';
+	//noticeTip.style.display = 'block';
 	setTimeout(function(){
 		loading.classList.add('fade');
 		setTimeout(function(){
