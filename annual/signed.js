@@ -76,7 +76,7 @@ function toggleScene() {
 		loading.classList.add('fade');
 		setTimeout(function(){
 			loading.parentNode.removeChild(loading);
-			noticeTip.classList.add('into')
+			//noticeTip.classList.add('into')
 		}, 1000);
 	}, 50);
 
