@@ -70,11 +70,13 @@ function toggleScene() {
 	cancelAnimationFrame(loadingTimer);
 	loadingTimer = null;
 	var loading = document.querySelector('.loading-all');
+	var noticeTip = document.querySelector('.notice');
+	noticeTip.classList.remove('hide');
 	setTimeout(function(){
 		loading.classList.add('fade');
 		setTimeout(function(){
 			loading.parentNode.removeChild(loading);
-			document.querySelector('.notice').classList.add('into')
+			noticeTip.classList.add('into')
 		}, 1000);
 	}, 50);
 
