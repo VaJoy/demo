@@ -15,6 +15,10 @@ body{
 .hide{
     display: none;
 }
+canvas{
+    transform-origin: 0 0;
+}
+
 .scene-all *{
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
