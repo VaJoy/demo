@@ -91,14 +91,25 @@ function loadImgs() {
 
 function drawCanvas(){
 	var c = document.querySelector("canvas");
-	var ctx = c.getContext("2d");
+	var cacheCanvas = document.createElement("canvas");
+
+	var c_width = c.width,
+		c_height = c.height;
+
+	cacheCanvas.width = c_width;
+	cacheCanvas.height = c_height;
+	var context = c.getContext("2d");
+	var ctx = cacheCanvas.getContext("2d");
 	var ratio = window.innerHeight / 700;
 	c.style.transform = 'scale(' + ratio + ',' + ratio +')';
 
 	var tranX = 0, tranY = 0;
-	var speed = 0.02;
+	var speed = 0.01;
+	var topBuildings = [1,2,3,4,5,6,7,8].map(function(i){return 'cimg/b'+i+'.png'}),
+		bottomBuildings = [5,6,7,8,1,2,3,4,5,6].map(function(i){return 'cimg/b'+i+'.png'});
 	var timer = setTimeout(function draw(){
-		ctx.clearRect(0, 0, c.width, c.height);
+		ctx.clearRect(0, 0, c_width, c_height);
+		console.log(tranX);
 		ctx.translate(tranX, tranY);
 
 		tranX -= speed;
@@ -107,7 +118,7 @@ function drawCanvas(){
 		//底色
 		drawBg(ctx);
 		//上方的建筑
-		drawBuilding(ctx, [1,2,3,4,5,6,7,8].map(function(i){return 'cimg/b'+i+'.png'}), {x:-193, y:-250}, 180, function(){
+		drawBuilding(ctx, topBuildings, {x:-193, y:-250}, 180, function(){
 			//道路
 			drawRoad(ctx);
 			//斑马线
@@ -115,8 +126,15 @@ function drawCanvas(){
 			//车
 			drawCar(ctx, 45, 356, function(){
 				//下方的建筑
-				drawBuilding(ctx, [5,6,7,8,1,2,3,4].map(function(i){return 'cimg/b'+i+'.png'}), {x:-330, y:333}, 180);
-				timer = setTimeout(draw, 20)
+				drawBuilding(ctx, bottomBuildings, {x:-330, y:333}, 180, function(){
+					timer = requestAnimationFrame(function(){
+						context.clearRect(0, 0, c_width, c_height);    //双缓存策略
+						context.drawImage(cacheCanvas, 0, 0, c_width, c_height);
+
+						draw();
+					})
+				});
+
 			});
 		});
 	}, 0);
@@ -125,23 +143,22 @@ function drawCanvas(){
 function drawBuilding(ctx, imgList, initAxis, span, callback){
 	var budingWidth = 469;
 	var index = imgList.length;
-	setTimeout(function draw(){
+	var draw = function(){
 		--index;
 		var url = imgList[index];
 		var img = new Image();
-		img.onload = function () {
-			budingWidth = img.width || budingWidth;
-			var x = initAxis.x + index * budingWidth - index * span;
-			var y = initAxis.y - Math.tan(Math.PI/6)*(x - initAxis.x);
-			ctx.drawImage(img, x, y, 469, 631);
-			if(index > 0){
-				draw()
-			} else {
-				callback && callback()
-			}
-		};
 		img.src = url;
-	}, 0);
+		budingWidth = img.width || budingWidth;
+		var x = initAxis.x + index * budingWidth - index * span;
+		var y = initAxis.y - Math.tan(Math.PI/6)*(x - initAxis.x);
+		ctx.drawImage(img, x, y, 469, 631);
+		if(index > 0){
+			draw()
+		} else {
+			callback && callback()
+		}
+	};
+	draw()
 }
 
 function drawCar(ctx, initX, initY, callback){
