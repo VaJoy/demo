@@ -104,34 +104,42 @@ function drawCanvas(){
 	c.style.transform = 'scale(' + ratio + ',' + ratio +')';
 
 	var tranX = 0, tranY = 0;
+	var tranCount = 0;
 	var speed = 0.01;
-	var topBuildings = [1,2,3,4,5,6,7,8].map(function(i){return 'cimg/b'+i+'.png'}),
-		bottomBuildings = [5,6,7,8,1,2,3,4,5,6].map(function(i){return 'cimg/b'+i+'.png'});
+	var topBuildings = [1,2,3,4,5,6,7,2].map(function(i){return 'cimg/b'+i+'.png'}),
+		bottomBuildings = [5,6,7,8,1,2,3,4,1].map(function(i){return 'cimg/b'+i+'.png'});
 	var timer = setTimeout(function draw(){
 		ctx.clearRect(0, 0, c_width, c_height);
-		console.log(tranX);
+		console.log(tranX + ', ' + tranY);
 		ctx.translate(tranX, tranY);
+		tranX = tranX - speed;
+		tranY = tranY + speed * (Math.tan(Math.PI/6)).toFixed(2);
 
-		tranX -= speed;
-		tranY += speed * Math.tan(Math.PI/6);
+		tranCount += tranX;
+
+		if(tranX<-4.7) {
+			speed = -0.01
+		}
+
+		console.log(tranCount);
 
 		//底色
 		drawBg(ctx);
 		//上方的建筑
 		drawBuilding(ctx, topBuildings, {x:-193, y:-250}, 180, function(){
 			//道路
-			drawRoad(ctx);
+			drawRoad(ctx, -56, 542);
 			//斑马线
 			drawLine(ctx, -18, 516);
 			//车
 			drawCar(ctx, 45, 356, function(){
 				//下方的建筑
-				drawBuilding(ctx, bottomBuildings, {x:-330, y:333}, 180, function(){
+				drawBuilding(ctx, bottomBuildings, {x:-62, y:176}, 180, function(){
 					timer = requestAnimationFrame(function(){
-						context.clearRect(0, 0, c_width, c_height);    //双缓存策略
-						context.drawImage(cacheCanvas, 0, 0, c_width, c_height);
+						context.clearRect(0, 0, c_width, c_height);
+						context.drawImage(cacheCanvas, 0, 0, c_width, c_height);   //双缓存策略
 
-						draw();
+						tranCount>-2200 && draw();
 					})
 				});
 
@@ -179,7 +187,7 @@ function drawLine(ctx, initX, initY, span){
 	var heightY = Math.sin(Math.PI/6) * height;
 	ctx.fillStyle = "white";
 
-	for(var i=0; i< 20; i++){
+	for(var i=0; i< 19; i++){
 		ctx.lineWidth = 11;
 		ctx.beginPath();
 
@@ -202,18 +210,20 @@ function drawBg(ctx){
 	ctx.fillRect(0,-5000,5000,7000);
 }
 
-function drawRoad(ctx) {
+function drawRoad(ctx, initX, initY, len) {
+	len = len || 3500;
 	ctx.lineWidth = 122;
 	ctx.beginPath();
-	ctx.moveTo(-56,542);
-	ctx.lineTo(706,100);
+	ctx.moveTo(initX, initY);
+	ctx.lineTo( len * Math.cos(Math.PI/6) + initX, initY - len * Math.sin(Math.PI/6));
 	ctx.strokeStyle="#FBBE7B";
 	ctx.stroke();
 
+
 	ctx.lineWidth = 68;
 	ctx.beginPath();
-	ctx.moveTo(-40,533);
-	ctx.lineTo(676,117);
+	ctx.moveTo(initX, initY);
+	ctx.lineTo( len * Math.cos(Math.PI/6) + initX, initY - len * Math.sin(Math.PI/6));
 	ctx.strokeStyle="#555555";
 	ctx.stroke();
 }
