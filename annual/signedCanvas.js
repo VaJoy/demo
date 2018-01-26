@@ -78,12 +78,15 @@ function toggleScene() {
 
 function loadImgs() {
 	var process = 0;
-	imgList.forEach(function(url){
+	imgList.forEach(function load(url){
 		var img = new Image();
 		img.onload = function(){
 			imgCount -= 1;
 			process += 10;
 			processBar.style.width = process + '%'
+		};
+		img.onerror = function(){
+			load(url)
 		};
 		img.src = url;
 	})
@@ -104,42 +107,59 @@ function drawCanvas(){
 	c.style.transform = 'scale(' + ratio + ',' + ratio +')';
 
 	var tranX = 0, tranY = 0;
+	var tranXCount = 0, tranYCount = 0;
 	var tranCount = 0;
 	var speed = 0.01;
 	var topBuildings = [1,2,3,4,5,6,7,2].map(function(i){return 'cimg/b'+i+'.png'}),
 		bottomBuildings = [5,6,7,8,1,2,3,4,1].map(function(i){return 'cimg/b'+i+'.png'});
 	var timer = setTimeout(function draw(){
 		ctx.clearRect(0, 0, c_width, c_height);
-		console.log(tranX + ', ' + tranY);
+
 		ctx.translate(tranX, tranY);
+
+		if(tranX != 0){
+			tranXCount += Math.abs(tranX);
+			tranYCount += Math.abs(tranY);
+		}
+
 		tranX = tranX - speed;
 		tranY = tranY + speed * (Math.tan(Math.PI/6)).toFixed(2);
 
-		tranCount += tranX;
+		tranCount += 1;
 
-		if(tranX<-4.7) {
-			speed = -0.01
+		if(tranX<-4.95) {
+			speed = -0.0112
+		}
+		if(tranCount > 920) {
+			tranX = tranY = speed=0;
 		}
 
-		console.log(tranCount);
+		//console.log(tranXCount);
+		// console.log(tranCount);
 
 		//底色
 		drawBg(ctx);
+		//道路
+		drawRoad(ctx, -56, 542);
+		//斑马线
+		drawLine(ctx, -18, 516);
+		//
+		drawHotel(ctx, 0, -456, 2440);
+
 		//上方的建筑
 		drawBuilding(ctx, topBuildings, {x:-193, y:-250}, 180, function(){
-			//道路
-			drawRoad(ctx, -56, 542);
-			//斑马线
-			drawLine(ctx, -18, 516);
 			//车
-			drawCar(ctx, 45, 356, function(){
+			drawCar(ctx, 15+tranXCount, 415-tranYCount, function(){
 				//下方的建筑
 				drawBuilding(ctx, bottomBuildings, {x:-62, y:176}, 180, function(){
 					timer = requestAnimationFrame(function(){
 						context.clearRect(0, 0, c_width, c_height);
 						context.drawImage(cacheCanvas, 0, 0, c_width, c_height);   //双缓存策略
-
-						tranCount>-2200 && draw();
+						if(tranCount<890){ // 小车行驶
+							draw();
+						} else {  //小车到点
+							draw(1);
+						}
 					})
 				});
 
@@ -147,6 +167,38 @@ function drawCanvas(){
 		});
 	}, 0);
 }
+
+function drawHotel(ctx, initX, initY, len){
+	var img = new Image();
+	img.src = 'cimg/hotel.png';
+	var x = initX + Math.cos(Math.PI/6) * len;
+	var y = initY - Math.sin(Math.PI/6) * len;
+	ctx.drawImage(img, x, y, 726, 961);
+	drawStaff(ctx)
+}
+
+
+var drawStaff = (function(){
+	var lastTime = 0, now;
+	var index = 0;
+	var draw = function(ctx, x, y){
+		//TODO - draw the pic of staff promo
+		// var img = new Image();
+		// img.src = 'cimg/hotel.png';
+		// ctx.drawImage(img, x, y, 726, 961);
+	};
+
+	return function(ctx, x, y){
+		draw(ctx, x, y);
+		now = Date.now();
+		if(now - lastTime > 3000){
+			++index;
+			if(index>3) index = 0;
+			lastTime = now;
+		}
+	}
+})();
+
 
 function drawBuilding(ctx, imgList, initAxis, span, callback){
 	var budingWidth = 469;
@@ -171,11 +223,9 @@ function drawBuilding(ctx, imgList, initAxis, span, callback){
 
 function drawCar(ctx, initX, initY, callback){
 	var img = new Image();
-	img.onload = function () {
-		ctx.drawImage(img, initX, initY, 133, 123);
-		callback && callback();
-	};
 	img.src = 'cimg/car.png';
+	ctx.drawImage(img, initX, initY, 100, 92);
+	callback && callback();
 }
 
 function drawLine(ctx, initX, initY, span){
@@ -187,7 +237,7 @@ function drawLine(ctx, initX, initY, span){
 	var heightY = Math.sin(Math.PI/6) * height;
 	ctx.fillStyle = "white";
 
-	for(var i=0; i< 19; i++){
+	for(var i=0; i< 20; i++){
 		ctx.lineWidth = 11;
 		ctx.beginPath();
 
