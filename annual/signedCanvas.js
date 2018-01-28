@@ -110,8 +110,8 @@ function drawCanvas(){
 	var tranXCount = 0, tranYCount = 0;
 	var tranCount = 0;
 	var speed = 0.01;
-	var topBuildings = [1,2,3,4,5,6,7,2].map(function(i){return 'cimg/b'+i+'.png'}),
-		bottomBuildings = [5,6,7,8,1,2,3,4,1].map(function(i){return 'cimg/b'+i+'.png'});
+	var topBuildings = [1,2,8,3,4,7,6,2].map(function(i){return 'cimg/b'+i+'.png'}),
+		bottomBuildings = [7,6,4,5,1,2,3,4,8].map(function(i){return 'cimg/b'+i+'.png'});
 	var timer = setTimeout(function draw(){
 		ctx.clearRect(0, 0, c_width, c_height);
 
@@ -144,7 +144,7 @@ function drawCanvas(){
 		//斑马线
 		drawLine(ctx, -18, 516);
 		//
-		drawHotel(ctx, 0, -456, 2440);
+		drawHotel(ctx, 0, -444, 2440);
 
 		//上方的建筑
 		drawBuilding(ctx, topBuildings, {x:-193, y:-250}, 180, function(){
