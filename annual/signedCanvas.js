@@ -122,8 +122,8 @@ function drawCanvas(){
 	var tranXCount = 0, tranYCount = 0;
 	var tranCount = 0;
 	var speed = 0.01;
-	var topBuildings = [1,2,8,3,4,7,6,2].map(function(i){return 'cimg/b'+i+'.png'}),
-		bottomBuildings = [7,6,4,5,1,2,3,4,8].map(function(i){return 'cimg/b'+i+'.png'});
+	var topBuildings = [1,2,8,3,6,5,4,2].map(function(i){return 'cimg/b'+i+'.png'}),
+		bottomBuildings = [7,5,6,4,1,2,3,6,8].map(function(i){return 'cimg/b'+i+'.png'});
 	var timer = setTimeout(function draw(){
 		ctx.clearRect(0, 0, c_width, c_height);
 
