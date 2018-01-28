@@ -8,6 +8,17 @@ Object.keys(Array.apply(null, {length: 8})).forEach(function(i){
 });
 var imgCount = imgList.length;
 var loadingTimer;
+var imgCache = {};
+
+function getImgObj(url){
+	if(!url) return {};
+	if(imgCache[url]) return imgCache[url];
+	var img = new Image();
+	img.src = url;
+	imgCache[url] = img;
+	return img
+}
+
 function startLoading(){
 	var sharps = [];
 	sharps.push("M296.17,393.49c2.99,2.62,7.34,6.63,12.54,11.05 c0.71,0.3,1.48,0.46,2.29,0.46c3.31,0,6-2.69,6-6c0-0.51-0.06-1-0.18-1.47l-0.99-0.81c-3.32-2.97-8.23-7.55-14.09-12.47 c-0.55-0.16-1.14-0.25-1.74-0.25c-3.31,0-6,2.69-6,6c0,0.7,0.12,1.37,0.34,2L296.17,393.49z");
@@ -89,6 +100,7 @@ function loadImgs() {
 			load(url)
 		};
 		img.src = url;
+		imgCache[url] = img;
 	})
 }
 
@@ -169,8 +181,7 @@ function drawCanvas(){
 }
 
 function drawHotel(ctx, initX, initY, len){
-	var img = new Image();
-	img.src = 'cimg/hotel.png';
+	var img = getImgObj('cimg/hotel.png');
 	var x = initX + Math.cos(Math.PI/6) * len;
 	var y = initY - Math.sin(Math.PI/6) * len;
 	ctx.drawImage(img, x, y, 726, 961);
@@ -206,8 +217,7 @@ function drawBuilding(ctx, imgList, initAxis, span, callback){
 	var draw = function(){
 		--index;
 		var url = imgList[index];
-		var img = new Image();
-		img.src = url;
+		var img = getImgObj(url);
 		budingWidth = img.width || budingWidth;
 		var x = initAxis.x + index * budingWidth - index * span;
 		var y = initAxis.y - Math.tan(Math.PI/6)*(x - initAxis.x);
@@ -222,8 +232,7 @@ function drawBuilding(ctx, imgList, initAxis, span, callback){
 }
 
 function drawCar(ctx, initX, initY, callback){
-	var img = new Image();
-	img.src = 'cimg/car.png';
+	var img = getImgObj('cimg/car.png');
 	ctx.drawImage(img, initX, initY, 100, 92);
 	callback && callback();
 }
