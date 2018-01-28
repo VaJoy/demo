@@ -1,7 +1,7 @@
 var svg = document.querySelector('#svg');
 var processBar = document.querySelector('.loading-process>p');
 
-var imgList = ['cimg/car.png'];
+var imgList = ['cimg/car.png', 'cimg/hotel.png', 'cimg/staff0.png', 'cimg/staff1.png', 'cimg/staff2.png', 'cimg/staff3.png'];
 Object.keys(Array.apply(null, {length: 8})).forEach(function(i){
 	i = (i|0) + 1;
 	imgList.push('cimg/b' + i + '.png')
@@ -93,7 +93,7 @@ function loadImgs() {
 		var img = new Image();
 		img.onload = function(){
 			imgCount -= 1;
-			process += 10;
+			process += 6.7;
 			processBar.style.width = process + '%'
 		};
 		img.onerror = function(){
@@ -124,7 +124,7 @@ function drawCanvas(){
 	var speed = 0.01;
 	var topBuildings = [1,2,8,3,6,5,4,2].map(function(i){return 'cimg/b'+i+'.png'}),
 		bottomBuildings = [7,5,6,4,1,2,3,6,8].map(function(i){return 'cimg/b'+i+'.png'});
-	var timer = setTimeout(function draw(){
+	var timer = setTimeout(function draw(isEnd){
 		ctx.clearRect(0, 0, c_width, c_height);
 
 		ctx.translate(tranX, tranY);
@@ -156,7 +156,7 @@ function drawCanvas(){
 		//斑马线
 		drawLine(ctx, -18, 516);
 		//
-		drawHotel(ctx, 0, -444, 2440);
+		drawHotel(ctx, 0, -444, 2440, isEnd);
 
 		//上方的建筑
 		drawBuilding(ctx, topBuildings, {x:-193, y:-250}, 180, function(){
@@ -167,10 +167,11 @@ function drawCanvas(){
 					timer = requestAnimationFrame(function(){
 						context.clearRect(0, 0, c_width, c_height);
 						context.drawImage(cacheCanvas, 0, 0, c_width, c_height);   //双缓存策略
-						if(tranCount<890){ // 小车行驶
+						//console.log(tranCount);
+						if(tranCount<990){ // 小车行驶
 							draw();
 						} else {  //小车到点
-							draw(1);
+							draw(true);
 						}
 					})
 				});
@@ -180,12 +181,12 @@ function drawCanvas(){
 	}, 0);
 }
 
-function drawHotel(ctx, initX, initY, len){
+function drawHotel(ctx, initX, initY, len, isCarEnd){
 	var img = getImgObj('cimg/hotel.png');
 	var x = initX + Math.cos(Math.PI/6) * len;
 	var y = initY - Math.sin(Math.PI/6) * len;
 	ctx.drawImage(img, x, y, 726, 961);
-	drawStaff(ctx)
+	isCarEnd && drawStaff(ctx, x, y)
 }
 
 
@@ -194,15 +195,15 @@ var drawStaff = (function(){
 	var index = 0;
 	var draw = function(ctx, x, y){
 		//TODO - draw the pic of staff promo
-		// var img = new Image();
-		// img.src = 'cimg/hotel.png';
-		// ctx.drawImage(img, x, y, 726, 961);
+		var img = getImgObj( 'cimg/staff'+index+'.png' );
+		ctx.drawImage(img, x+308, y+390, 160, 136);
 	};
 
 	return function(ctx, x, y){
 		draw(ctx, x, y);
 		now = Date.now();
-		if(now - lastTime > 3000){
+		if(lastTime == 0) lastTime = now;
+		if(now - lastTime > 5000){
 			++index;
 			if(index>3) index = 0;
 			lastTime = now;
@@ -246,7 +247,7 @@ function drawLine(ctx, initX, initY, span){
 	var heightY = Math.sin(Math.PI/6) * height;
 	ctx.fillStyle = "white";
 
-	for(var i=0; i< 20; i++){
+	for(var i=0; i< 19; i++){
 		ctx.lineWidth = 11;
 		ctx.beginPath();
 
@@ -265,7 +266,7 @@ function drawLine(ctx, initX, initY, span){
 
 function drawBg(ctx){
 	ctx.beginPath();
-	ctx.fillStyle = "#00B25A";
+	ctx.fillStyle = "#01A356";
 	ctx.fillRect(0,-5000,5000,7000);
 }
 
@@ -275,7 +276,7 @@ function drawRoad(ctx, initX, initY, len) {
 	ctx.beginPath();
 	ctx.moveTo(initX, initY);
 	ctx.lineTo( len * Math.cos(Math.PI/6) + initX, initY - len * Math.sin(Math.PI/6));
-	ctx.strokeStyle="#FBBE7B";
+	ctx.strokeStyle="#EEE";
 	ctx.stroke();
 
 
