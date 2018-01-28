@@ -72,6 +72,15 @@ DelayRAF.prototype.timeout = function(callback, interval){
 	});
 };
 
+function toggleNotice(state, info){
+	var notice = document.querySelector('.notice');
+	if(info) {
+		notice.innerHTML = info;
+	}
+	var func = state ? 'add' : 'remove';
+	notice.classList[func]('into')
+}
+
 function toggleScene() {
 	processBar.style.width = '100%';
 	cancelAnimationFrame(loadingTimer);
@@ -82,6 +91,7 @@ function toggleScene() {
 		loading.classList.add('fade');
 		setTimeout(function(){
 			loading.parentNode.removeChild(loading);
+			toggleNotice(true)
 		}, 1000);
 	}, 50);
 
@@ -124,6 +134,7 @@ function drawCanvas(){
 	var speed = 0.01;
 	var topBuildings = [1,2,8,3,6,5,4,2].map(function(i){return 'cimg/b'+i+'.png'}),
 		bottomBuildings = [7,5,6,4,1,2,3,6,8].map(function(i){return 'cimg/b'+i+'.png'});
+
 	var timer = setTimeout(function draw(isEnd){
 		ctx.clearRect(0, 0, c_width, c_height);
 
@@ -168,10 +179,14 @@ function drawCanvas(){
 						context.clearRect(0, 0, c_width, c_height);
 						context.drawImage(cacheCanvas, 0, 0, c_width, c_height);   //双缓存策略
 						//console.log(tranCount);
-						if(tranCount<990){ // 小车行驶
+						if(tranCount<1000){ // 小车行驶
 							draw();
 						} else {  //小车到点
 							draw(true);
+							if(!cacheCanvas.isEnd){
+								cacheCanvas.isEnd = true;
+								toggleNotice(false)
+							}
 						}
 					})
 				});
