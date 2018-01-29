@@ -87,8 +87,8 @@ function errorHandle(info){
 }
 
 function toggleScene() {
-	alert(window.userState);
-	if(window.userState !=0 || window.userState !=1) {  //异常处理
+	window.userState = 1;
+	if(window.userState !=0 && window.userState !=1) {  //异常处理
 		switch (window.userState){
 			case null:
 			case -1:
@@ -200,15 +200,15 @@ function drawCanvas(){
 						context.clearRect(0, 0, c_width, c_height);
 						context.drawImage(cacheCanvas, 0, 0, c_width, c_height);   //双缓存策略
 						//console.log(tranCount);
-						if(tranCount<990){ // 小车行驶
+						if(tranCount<1000){ // 小车行驶
 							draw();
-						} else {  //小车到点
-							draw(true);
-							if(!cacheCanvas.isEnd){
+							if(tranCount>900 && !cacheCanvas.isEnd){
 								cacheCanvas.isEnd = true;
 								toggleNotice(true);
 								setTimeout(toggleNotice, 6000);
 							}
+						} else {  //小车到点
+							draw(true);
 						}
 					})
 				});
