@@ -87,7 +87,7 @@ function errorHandle(info){
 }
 
 function toggleScene() {
-	console.log(window.userState);
+	alert(window.userState);
 	if(window.userState !=0 || window.userState !=1) {  //异常处理
 		switch (window.userState){
 			case null:
@@ -200,7 +200,7 @@ function drawCanvas(){
 						context.clearRect(0, 0, c_width, c_height);
 						context.drawImage(cacheCanvas, 0, 0, c_width, c_height);   //双缓存策略
 						//console.log(tranCount);
-						if(tranCount<1000){ // 小车行驶
+						if(tranCount<990){ // 小车行驶
 							draw();
 						} else {  //小车到点
 							draw(true);
