@@ -44,7 +44,7 @@ function startLoading(){
 
 		i+=1;
 		if(i == sharps.length) {
-			if(imgCount == 0 || loopCount >= 15) { //图片已加载完，或者循环了15次，直接切换场景
+			if((imgCount == 0 && window.userState != null) || (window.userState < 0) || loopCount >= 15) { //图片已加载完+jsonp都已回调，或者jsonp回包错误码，或者循环了15次，直接切换场景
 				toggleScene()
 			} else {  //最后一帧svg，停个2秒
 				loopCount++;
@@ -81,7 +81,29 @@ function toggleNotice(state, info){
 	notice.classList[func]('into')
 }
 
+function errorHandle(info){
+	processBar.parentNode.removeChild(processBar);
+	document.querySelector('#loading-tip').innerHTML = info
+}
+
 function toggleScene() {
+	console.log(window.userState);
+	if(window.userState !=0 || window.userState !=1) {  //异常处理
+		switch (window.userState){
+			case null:
+			case -1:
+				errorHandle('请求异常，请使用OA登记的手Q号码访问');
+				break;
+			case -2:
+				errorHandle('请使用手Q访问');
+				break;
+		}
+
+		return;
+	} else if(window.userState ==1){
+		toggleNotice(null, '你已经签到成功咯')
+	}
+
 	processBar.style.width = '100%';
 	cancelAnimationFrame(loadingTimer);
 	loadingTimer = null;
@@ -91,7 +113,6 @@ function toggleScene() {
 		loading.classList.add('fade');
 		setTimeout(function(){
 			loading.parentNode.removeChild(loading);
-			toggleNotice(true)
 		}, 1000);
 	}, 50);
 
@@ -185,7 +206,8 @@ function drawCanvas(){
 							draw(true);
 							if(!cacheCanvas.isEnd){
 								cacheCanvas.isEnd = true;
-								toggleNotice(false)
+								toggleNotice(true);
+								setTimeout(toggleNotice, 6000);
 							}
 						}
 					})

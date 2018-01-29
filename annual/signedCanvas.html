@@ -15,6 +15,14 @@
 </head>
 <body>
 
+    <script type="text/javascript">
+        window.userState = null;
+        function jsonp1(result){
+            if(result && result.ret!=null) window.userState = result.ret;
+        }
+    </script>
+    <script type="text/javascript" onerror="window.userState = -1;" src="https://oa.m.tencent.com/an:vas-act/jsonPsign?jsonp1=callbackFunction"></script>
+
 <div class="notice">签到成功，好运+1</div>
 
 <section class="canvas-wrap">
@@ -34,7 +42,7 @@
         </div>
         <div class="loading-process">
             <p style="width:5%"></p>
-            <span>Loading</span>
+            <span id="loading-tip">Loading</span>
         </div>
     </div>
 </section>
